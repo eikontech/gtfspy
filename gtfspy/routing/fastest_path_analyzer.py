@@ -37,7 +37,7 @@ class FastestPathAnalyzer:
 
     def _compute_fastest_path_labels(self, labels):
         relevant_labels = [label.get_copy() for label in labels if (self.start_time_dep < label.departure_time <= self.end_time_dep)]
-        if len(relevant_labels) is 0 or relevant_labels[-1].departure_time < self.end_time_dep:
+        if len(relevant_labels) == 0 or relevant_labels[-1].departure_time < self.end_time_dep:
             # add an after label
             smallest_arr_time_after_end_time = float('inf')
             smallest_arr_time_label = None

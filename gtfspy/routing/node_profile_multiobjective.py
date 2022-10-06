@@ -75,7 +75,7 @@ class NodeProfileMultiObjective:
             assert min_dep_index == dep_time_index or (min_dep_index == dep_time_index - 1), \
                 "dep times should be ordered sequentially"
         else:
-            assert dep_time_index is 0, "first dep_time index should be zero (ensuring that all connections are properly handled)"
+            assert dep_time_index == 0, "first dep_time index should be zero (ensuring that all connections are properly handled)"
         self._min_dep_time = dep_time
 
     def get_walk_to_target_duration(self):
