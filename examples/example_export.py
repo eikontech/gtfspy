@@ -2,7 +2,7 @@ from example_import import load_or_import_example_gtfs
 from gtfspy import networks
 from gtfspy import route_types
 
-g = load_or_import_example_gtfs()
+g = load_or_import_example_gtfs() 
 day_start_ut = g.get_weekly_extract_start_date(ut=True)
 
 start_ut = day_start_ut + 7 * 3600
