@@ -264,10 +264,10 @@ def temporal_network(gtfs,
     events_df = gtfs.get_transit_events(start_time_ut=start_time_ut,
                                         end_time_ut=end_time_ut,
                                         route_type=route_type)
-    events_df.drop('to_seq', 1, inplace=True)
-    events_df.drop('shape_id', 1, inplace=True)
-    events_df.drop('duration', 1, inplace=True)
-    events_df.drop('route_id', 1, inplace=True)
+    events_df.drop(columns='to_seq', inplace=True)
+    events_df.drop(columns='shape_id', inplace=True)
+    events_df.drop(columns='duration', inplace=True)
+    events_df.drop(columns='route_id', inplace=True)
     events_df.rename(
         columns={
             'from_seq': "seq"
