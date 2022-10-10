@@ -13,3 +13,4 @@ from gtfspy.import_loaders.stop_distances_loader import StopDistancesLoader
 from gtfspy.import_loaders.stop_loader import StopLoader
 from gtfspy.import_loaders.stop_times_loader import StopTimesLoader
 from gtfspy.import_loaders.transfer_loader import TransfersLoader
+from gtfspy.import_loaders.route_pattern_loader import RoutePatternLoader

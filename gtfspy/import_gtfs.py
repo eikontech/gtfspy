@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 
 from gtfspy.import_loaders import AgencyLoader, CalendarDatesLoader, CalendarLoader, DayLoader, \
     DayTripsMaterializer, FeedInfoLoader, FrequenciesLoader, TripLoader, MetadataLoader, RouteLoader, \
-    ShapeLoader, StopDistancesLoader, StopLoader, StopTimesLoader, TransfersLoader
+    ShapeLoader, StopDistancesLoader, StopLoader, StopTimesLoader, TransfersLoader, RoutePatternLoader
 from gtfspy.import_loaders.table_loader import ignore_tables, decode_six
 
 """
@@ -39,7 +39,8 @@ Loaders = [AgencyLoader,  # deps: -
            StopTimesLoader,  # deps: Stop, Trip                           |                  |(v: Trip, Day)
            FrequenciesLoader,  # deps: Trip (pi: Trip, StopTimes)           |
            DayLoader,  # deps: (pi: Calendar, CalendarDates, Trip)  |
-           DayTripsMaterializer  # deps:                                      | (pi2: Day)
+           DayTripsMaterializer,  # deps:                                      | (pi2: Day)
+           RoutePatternLoader
            ]
 postprocessors = [
     #validate_day_start_ut,
