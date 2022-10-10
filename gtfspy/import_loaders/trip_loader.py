@@ -5,11 +5,17 @@ class TripLoader(TableLoader):
     fname = 'trips.txt'
     table = 'trips'
     # service_I INT NOT NULL
-    tabledef = ('(trip_I INTEGER PRIMARY KEY, trip_id TEXT UNIQUE NOT NULL, '
-                'route_I INT, service_I INT, direction_id TEXT, shape_id TEXT, '
+    tabledef = ('(trip_I INTEGER PRIMARY KEY,'
+                'trip_id TEXT UNIQUE NOT NULL, '
+                'route_I INT, '
+                'service_I INT, '
+                'direction_id TEXT, '
+                'route_pattern_I INT, '
+                'shape_id TEXT, '
                 'headsign TEXT, '
-                'start_time_ds INT, end_time_ds INT)')
-    extra_keys = ['route_I', 'service_I' ] #'shape_I']
+                'start_time_ds INT, '
+                'end_time_ds INT)')
+    extra_keys = ['route_I', 'service_I'] #'shape_I']
     extra_values = ['(SELECT route_I FROM routes WHERE route_id=:_route_id )',
                     '(SELECT service_I FROM calendar WHERE service_id=:_service_id )',
                     #'(SELECT shape_I FROM shapes WHERE shape_id=:_shape_id )'
@@ -38,9 +44,11 @@ class TripLoader(TableLoader):
         # cur.execute('CREATE INDEX IF NOT EXISTS idx_trips_tid ON trips (trip_id)')
         cur.execute('CREATE INDEX IF NOT EXISTS idx_trips_svid ON trips (service_I)')
         cur.execute('CREATE INDEX IF NOT EXISTS idx_trips_rid ON trips (route_I)')
+        cur.execute('CREATE INDEX IF NOT EXISTS idx_trips_rpid ON trips (route_pattern_I)')
 
     def post_import_round2(self, conn):
         update_trip_travel_times_ds(conn)
+        update_trip_route_pattern(conn)
 
     # This has now been moved to DayTripsMaterializer, but is left
     # here in case we someday want to make DayTripsMaterializer
@@ -82,3 +90,15 @@ def update_trip_travel_times_ds(conn):
     cur.executemany('''UPDATE trips SET start_time_ds=?, end_time_ds=? WHERE trip_I=?''',
                     iter_rows(cur0))
     conn.commit()
+
+def update_trip_route_pattern(conn):
+    cur0 = conn.cursor()
+    cur = conn.cursor()
+    cur0.execute('''SELECT route_patterns.route_pattern_I, trips.trip_I
+                    FROM trips
+                    JOIN route_patterns ON route_patterns.shape_id == trips.shape_id''')
+
+    print("updating trips ruote_pattern_ids")
+
+    cur.executemany('''UPDATE trips SET route_pattern_I=? WHERE trip_I=?''', cur0)
+
